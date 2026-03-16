@@ -1,0 +1,87 @@
+services:
+
+  kuksa-databroker:
+    image: ghcr.io/eclipse-kuksa/kuksa-databroker:0.4.4
+    container_name: kuksa-databroker
+    ports:
+      - "55555:55555"
+    command: --insecure
+
+  mongodb:
+    image: docker.io/mongo:7.0
+    restart: always
+    command: mongod --storageEngine wiredTiger --noscripting
+    user: mongodb
+
+  policies:
+    image: docker.io/eclipse/ditto-policies:3.5.5
+    restart: always
+    networks:
+      default:
+        aliases:
+          - ditto-cluster
+    depends_on:
+      - mongodb
+    environment:
+      - BIND_HOSTNAME=0.0.0.0
+      - MONGO_DB_HOSTNAME=mongodb
+      - JAVA_TOOL_OPTIONS=-XX:ActiveProcessorCount=2 -XX:MaxRAMPercentage=50 -Dpekko.coordinated-shutdown.exit-jvm=on -Dpekko.cluster.shutdown-after-unsuccessful-join-seed-nodes=180s -Dpekko.cluster.downing-provider-class=
+
+  things:
+    image: docker.io/eclipse/ditto-things:3.5.5
+    restart: always
+    networks:
+      default:
+        aliases:
+          - ditto-cluster
+    depends_on:
+      - policies
+    environment:
+      - BIND_HOSTNAME=0.0.0.0
+      - MONGO_DB_HOSTNAME=mongodb
+      - JAVA_TOOL_OPTIONS=-XX:ActiveProcessorCount=2 -XX:MaxRAMPercentage=50 -Dpekko.coordinated-shutdown.exit-jvm=on -Dpekko.cluster.shutdown-after-unsuccessful-join-seed-nodes=180s -Dpekko.cluster.downing-provider-class=
+
+  things-search:
+    image: docker.io/eclipse/ditto-things-search:3.5.5
+    restart: always
+    networks:
+      default:
+        aliases:
+          - ditto-cluster
+    depends_on:
+      - policies
+    environment:
+      - BIND_HOSTNAME=0.0.0.0
+      - MONGO_DB_HOSTNAME=mongodb
+      - JAVA_TOOL_OPTIONS=-XX:ActiveProcessorCount=2 -XX:MaxRAMPercentage=50 -Dpekko.coordinated-shutdown.exit-jvm=on -Dpekko.cluster.shutdown-after-unsuccessful-join-seed-nodes=180s -Dpekko.cluster.downing-provider-class=
+
+  connectivity:
+    image: docker.io/eclipse/ditto-connectivity:3.5.5
+    restart: always
+    networks:
+      default:
+        aliases:
+          - ditto-cluster
+    depends_on:
+      - policies
+    environment:
+      - BIND_HOSTNAME=0.0.0.0
+      - MONGO_DB_HOSTNAME=mongodb
+      - JAVA_TOOL_OPTIONS=-XX:ActiveProcessorCount=2 -XX:MaxRAMPercentage=50 -Dpekko.coordinated-shutdown.exit-jvm=on -Dpekko.cluster.shutdown-after-unsuccessful-join-seed-nodes=180s -Dpekko.cluster.downing-provider-class=
+
+  gateway:
+    image: docker.io/eclipse/ditto-gateway:3.5.5
+    restart: always
+    networks:
+      default:
+        aliases:
+          - ditto-cluster
+    depends_on:
+      - policies
+    ports:
+      - "8080:8080"
+    environment:
+      - BIND_HOSTNAME=0.0.0.0
+      - ENABLE_PRE_AUTHENTICATION=true
+      - DEVOPS_PASSWORD=devops
+      - JAVA_TOOL_OPTIONS=-XX:ActiveProcessorCount=2 -XX:MaxRAMPercentage=50 -Dpekko.coordinated-shutdown.exit-jvm=on -Dpekko.cluster.shutdown-after-unsuccessful-join-seed-nodes=180s -Dpekko.cluster.downing-provider-class=
