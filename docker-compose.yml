@@ -85,3 +85,18 @@ services:
       - ENABLE_PRE_AUTHENTICATION=true
       - DEVOPS_PASSWORD=devops
       - JAVA_TOOL_OPTIONS=-XX:ActiveProcessorCount=2 -XX:MaxRAMPercentage=50 -Dpekko.coordinated-shutdown.exit-jvm=on -Dpekko.cluster.shutdown-after-unsuccessful-join-seed-nodes=180s -Dpekko.cluster.downing-provider-class=
+
+  zenoh-router:
+      image: eclipse/zenoh:0.11.0
+      container_name: zenoh-router
+      ports:
+        - "7447:7447"
+        - "8000:8000"
+      command: --no-multicast-scouting --cfg 'plugins/storage_manager/storages/demo:{key_expr:"vehicle/**",volume:"memory"}'
+
+
+  ditto-ui:
+      image: docker.io/eclipse/ditto-ui:3.5.5
+      container_name: ditto-ui
+      ports:
+        - "8888:8080"
