@@ -1,10 +1,10 @@
 # SDV Pipeline — Group 20 (CRN 75766)
 
 Ontario Tech University | Software-Defined Vehicle Project  
-Darren Kosick - 100626351
-Hannah Albi - 100821689
-Kiran Sakthivel - 100925900
-Krishna Mallick - 100876443
+Darren Kosick - 100626351  
+Hannah Albi - 100821689  
+Kiran Sakthivel - 100925900  
+Krishna Mallick - 100876443  
 Thashon Srikantharajah - 100625757
 
 ---
