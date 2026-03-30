@@ -12,7 +12,7 @@ Thashon Srikantharajah - 100625757
 
 ### System Extension
 
-In Iteration 2, the SDV pipeline was extended by introducing a message delay in the bridge component (commuincation layer). A 5 second delay was applied to the `VehicleSpeed` signal within the layer.
+In Iteration 2, the SDV pipeline was extended by introducing a message delay in the bridge component (commuincation layer). A 5 second delay was applied to the `VehicleSpeed` signal within the layer. A 'Current Time' timestamp was also added to the live monitor (monitor.py) for clearer results.
 
 ---
 
@@ -35,14 +35,6 @@ latency = recieve_time - send_time
 Two conditions were evaluated:
 1. Normal signals (no delay)
 2. Delayed signals (`VehicleSpeed` with a 5-second delay
-
----
-
-# Results 
-
----
-
-# Analysis
 
 ---
 
