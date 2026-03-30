@@ -47,8 +47,13 @@ async def main():
                 print("   SDV LIVE MONITOR — org.vehicle:my-device")
                 print(f"Current Time: {time.strftime('%H:%M:%S')}")
                 print("=" * 45)
+                
                 for feature, data in features.items():
-                    value = data.get("properties", {}).get("value", 0)
+                    if isinstance(data, dict):
+                        value = data.get("properties", {}).get("value", 0)
+                    else:
+                        value = data
+                        
                     s = status(feature, value)
                     time_ = time.strftime("%H:%M:%S")
                     print(f"  {feature:<28} {value:>8.2f}  {color(s)} [{time_}]")
