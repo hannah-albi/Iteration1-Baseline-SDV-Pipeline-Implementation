@@ -65,6 +65,7 @@ async def main():
                             # Iteration 2 extension -- message delay within communication layer & 
                             # latency measurement 
                             if feature == "VehicleSpeed":
+                                print("Applying delay...", flush=True)
                                 await asyncio.sleep(5)
                             
                             # Forward to Ditto
