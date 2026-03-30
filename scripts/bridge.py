@@ -54,13 +54,24 @@ async def main():
                             if not feature:
                                 continue
                             value = datapoint.value
-
+                            # Defining send time
+                            send_ts = time.time()
+                            # Printing the send time of feature
+                            print(f"SENT {feature}={round(value,2)} at {send_ts:.2f}", flush=True)
                             # Publish through Zenoh
-                            payload = json.dumps({"feature": feature, "value": value, "ts": time.time()})
+                            payload = json.dumps({"feature": feature, "value": value, "ts": send_ts})
                             session.put(f"vehicle/{feature.lower()}", payload)
 
+                            # Iteration 2 extension -- message delay within communication layer & 
+                            # latency measurement 
+                            if feature == "VehicleSpeed":
+                                await asyncio.sleep(5)
+                            
                             # Forward to Ditto
                             await update_ditto(http, feature, value)
+
+                            recv_ts = time.time()
+                            print(f"RECEIVED {feature}={round(value,2)} at {recv_ts:.2f} | latency={recv_ts - send_ts:.2f}s", flush=True)
 
             except Exception as e:
                 print(f"Error: {e} — retrying in 5s", flush=True)
