@@ -45,6 +45,7 @@ async def main():
                 print("\033[2J\033[H", end="")  # clear screen
                 print("=" * 45)
                 print("   SDV LIVE MONITOR — org.vehicle:my-device")
+                print(f"Current Time: {time.strftime('%H:%M:%S')}")
                 print("=" * 45)
                 for feature, data in features.items():
                     value = data.get("properties", {}).get("value", 0)
