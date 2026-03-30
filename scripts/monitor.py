@@ -1,6 +1,7 @@
 import asyncio
 import httpx
 import os
+import time
 
 DITTO_HOST = os.getenv("DITTO_HOST", "localhost")
 DITTO_PORT = os.getenv("DITTO_PORT", "8080")
@@ -48,7 +49,8 @@ async def main():
                 for feature, data in features.items():
                     value = data.get("properties", {}).get("value", 0)
                     s = status(feature, value)
-                    print(f"  {feature:<28} {value:>8.2f}  {color(s)}")
+                    time_ = time.strftime("%H:%M:%S")
+                    print(f"  {feature:<28} {value:>8.2f}  {color(s)} [{time_}]")
                 print("=" * 45)
                 print("  OK | (!) WARNING | (!!) CRITICAL")
             except Exception as e:
