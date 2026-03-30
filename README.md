@@ -148,6 +148,44 @@ docker compose down
 
 ---
 
+## Iteration 2: System Extension, Validation & Evaluation
+
+### System Extension
+
+In Iteration 2, the SDV pipeline was extended by introducing a message delay in the bridge component (commuincation layer). A 5 second delay was applied to the `VehicleSpeed` signal within the layer.
+
+---
+
+### Functional Validation
+
+The system continues to operate correctly after the modification. All vehicle signals were still successfully recived (from Kuska), published (through Zenoh), and updated (in Eclipse Ditto).
+
+The digital twin remains synchronized with incoming data, with the only visible change being the 5 second delay in the updates for `VehicleSpeed` signal.
+
+---
+
+### Non-Functional Testing
+
+The latency of signal propagation was measured within the communication layer (bridge.py) by recording the timestamps of before and after forwarding from the bridge to the digital twin.
+
+The calculation is as follows:
+
+latency = recieve_time - send_time
+
+Two conditions were evaluated:
+1. Normal signals (no delay)
+2. Delayed signals (`VehicleSpeed` with a 5-second delay
+
+---
+
+# Results 
+
+---
+
+# Analysis
+
+---
+
 ## Project Structure
 ```
 ├── docker-compose.yml
